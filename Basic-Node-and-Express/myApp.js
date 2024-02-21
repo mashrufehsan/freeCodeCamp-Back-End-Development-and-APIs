@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express();
 require('dotenv').config(); // this is required to access the .env file
+let bodyParser = require('body-parser');
 
 // 1
 
@@ -32,6 +33,11 @@ app.use((req, res, next)=>{
     next()
 })
 
+// 11
+
+app.use(bodyParser.urlencoded({extended: false}))
+
+
 /*
 //5
 app.get('/json',(req, res)=>{
@@ -51,8 +57,36 @@ app.get('/json',(req, res)=>{
     }
 })
 
+// 8
 
+app.get('/now', (req, res, next)=>{
+    req.time = new Date().toString()
+    next()
+},(req, res)=>{
+    res.json({time: req.time})
+})
 
+// 9
+
+app.get('/:word/echo',(req, res)=>{
+    res.json({echo: req.params.word})
+})
+
+// 10
+
+app.get('/name', (req, res) => {
+
+    res.json({name: req.query.first + ' ' + req.query.last})
+
+})
+
+// 12
+
+app.post('/name', (req, res) => {
+
+    res.json({name: req.body.first + ' ' + req.body.last})
+
+})
 
 
 
