@@ -66,41 +66,125 @@ const findPeopleByName = (personName, done) => {
 };
 
 
+//6
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+
+  Person.findOne({favoriteFoods: food}, (error, data)=>{
+    if(error){
+      console.log(error);
+    }else{
+      done(null, data)
+    }
+  })
+
 };
 
+
+//7
+
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  
+
+  Person.findById(personId, (error, data) => {
+    if(error){
+      console.log(error);
+    }
+    else{
+      done(null, data)
+    }
+  })
+
+
 };
+
+//8
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
 
-  done(null /*, data*/);
+  Person.findById(personId,(error, data)=>{
+    if(error){
+      console.log(error);
+    }
+    else{
+      data.favoriteFoods.push(foodToAdd)
+      data.save((error,data)=>{
+        if(error){
+          console.log(error)
+        }
+        else{
+          done(null, data)
+        }
+      })
+      
+    }
+  })
+  
 };
+
+
+//9
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
 
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (error, result)=>{
+    if(error){
+      console.log(error);
+    }else{
+      done(null,result)
+    }
+  })
+
+  
 };
 
+//10
+
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+
+  Person.findByIdAndRemove(personId, (error, data)=>{
+    if(error){
+      console.log(error);
+    }else{
+      done(null,data)
+    }
+  })
 };
+
+//11
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
 
-  done(null /*, data*/);
+  Person.remove({name: nameToRemove}, (error, data)=>{
+    if(error){
+      console.log(error);
+    }else{
+      done(null,data)
+    }
+  })
+
 };
+
+//12
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  Person.find({favoriteFoods: {$all: foodToSearch}})
+  .sort('name')
+  .limit(2)
+  .select('-age')
+  .exec((error, data)=>{
+    if(error){
+      console.log(error);
+    }
+    else{
+      done(null, data)
+    }
+  })
 };
 
 /** **Well Done !!**
